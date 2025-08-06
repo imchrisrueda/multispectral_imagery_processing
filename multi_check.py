@@ -1,17 +1,41 @@
+"""
+Script para extraer altitud GPS de imágenes usando exiftool (Ubuntu)
+Requiere: exiftool instalado (sudo apt install libimage-exiftool-perl)
+"""
+
 import os
 import subprocess
 import json
 import pandas as pd
+import re
 
 def extraer_altitud_exiftool(ruta_imagen):
     try:
         comando = ['exiftool', '-j', '-GPSAltitude', '-AbsoluteAltitude', ruta_imagen]
         resultado = subprocess.run(comando, capture_output=True, text=True, check=True)
-        metadata = json.loads(resultado.stdout)[0]
+
+        salida = resultado.stdout.strip()
+        if not salida:
+            raise ValueError("Exiftool no devolvió datos")
+
+        metadata_list = json.loads(salida)
+        if not metadata_list:
+            raise ValueError("Sin metadatos en la salida de exiftool")
+
+        metadata = metadata_list[0]
         alt = metadata.get('GPSAltitude') or metadata.get('AbsoluteAltitude')
-        if isinstance(alt, str) and ' m' in alt:
-            alt = float(alt.replace(' m', ''))
-        return float(alt) if alt is not None else None
+
+        if isinstance(alt, str):
+            # Extraer primer número en la cadena, incluyendo decimales
+            match = re.search(r"[-+]?\d*\.\d+|\d+", alt)
+            if match:
+                return float(match.group())
+
+        elif isinstance(alt, (int, float)):
+            return float(alt)
+
+        return None
+
     except Exception as e:
         print(f"Error con {ruta_imagen}: {e}")
         return None
@@ -20,7 +44,7 @@ def procesar_directorio(directorio):
     datos = []
     altitud_anterior = None
     archivos = sorted([f for f in os.listdir(directorio) if f.lower().endswith(('.jpg', '.tif', '.tiff'))])
-    print(f"Procesando {len(archivos)} imágenes...")
+    print(f"Procesando {len(archivos)} imágenes...\n")
 
     for archivo in archivos:
         ruta = os.path.join(directorio, archivo)
@@ -46,7 +70,14 @@ if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="Lectura robusta de altitud con exiftool")
     parser.add_argument("directorio", help="Ruta al directorio con imágenes")
+    
     args = parser.parse_args()
 
-    tabla = procesar_directorio(args.directorio)
+    directorio = os.path.abspath(args.directorio)
+    if not os.path.isdir(directorio):
+        print(f"Directorio no válido: {directorio}")
+        exit(1)
+
+    tabla = procesar_directorio(directorio)
     print(tabla.to_string(index=False))
+
