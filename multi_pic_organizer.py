@@ -59,15 +59,21 @@ class MultispectralOrganizer:
         self.calibration_pattern = re.compile(r'IMG_0000_([1-9]|1[01])\..*')
 
         # Configuración de logging en el directorio base
+        # Elimina handlers previos si ya existen
+        for handler in logging.root.handlers[:]:
+            logging.root.removeHandler(handler)
+
+        # Configura el nuevo archivo de log en el directorio base
         log_file = self.base_dir / "file_organizer.log"
         logging.basicConfig(
             level=logging.INFO,
             format='%(asctime)s - %(levelname)s - %(message)s',
             handlers=[
-                logging.FileHandler(log_file, mode='w'),
+                logging.FileHandler(log_file, mode='w', encoding='utf-8'),
                 logging.StreamHandler()
             ]
         )
+
 
         logging.info(f"Inicializando organizador en: {self.base_dir}")
 
