@@ -11,11 +11,9 @@ Estructura objetivo:
 - calibration/: Primeras 11 imágenes (IMG_0000_1 hasta IMG_0000_11)
 - dat_files/: Todos los archivos .dat
 
-Uso:
-python multi_pic_organizer.py /ruta/a/tu/directorio
+Uso: python multi_pic_organizer.py /ruta/a/tu/directorio
 
-Autor: Claude AI
-Fecha: 2025
+Fecha: agosto 2025
 """
 
 import os
@@ -258,7 +256,7 @@ class MultispectralOrganizer:
             bool: True si la organización fue exitosa
         """
         try:
-            print("🚀 Iniciando organización de archivos multiespectrales...")
+            print("Iniciando organización de archivos multiespectrales...")
             
             # Validar estructura inicial
             if not self.validate_structure():
@@ -268,15 +266,15 @@ class MultispectralOrganizer:
             self.create_destination_folders()
             
             # Organizar imágenes
-            print("📸 Organizando imágenes...")
+            print("Organizando imágenes...")
             regular_count, calibration_count = self.organize_images()
             
             # Organizar archivos .dat
-            print("📄 Organizando archivos .dat...")
+            print("Organizando archivos .dat...")
             dat_count = self.organize_dat_files()
             
             # Limpiar carpetas vacías (opcional)
-            print("🧹 Limpiando carpetas vacías...")
+            print("Limpiando carpetas vacías...")
             self.cleanup_empty_folders()
             
             # Generar reporte
@@ -302,7 +300,7 @@ def main():
         base_directory = "."
     
     print("="*60)
-    print("ORGANIZADOR DE ARCHIVOS MULTIESPECTRALES")
+    print("ORGANIZADOR DE IMÁGENES MULTIESPECTRALES - MICASENSE")
     print("="*60)
     
     # Crear instancia del organizador
@@ -312,9 +310,9 @@ def main():
     success = organizer.run()
     
     if success:
-        print("\n🎉 Proceso completado. Revisa el archivo 'file_organizer.log' para más detalles.")
+        print("\n🎉 Proceso completado. Detalles del proceso en el archivo 'file_organizer.log'")
     else:
-        print("\n❌ El proceso no se completó correctamente. Revisa los errores en el log.")
+        print("\n❌ El proceso no se completó correctamente. Revise los errores en el log.")
     
     return 0 if success else 1
 
