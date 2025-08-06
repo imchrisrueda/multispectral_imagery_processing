@@ -42,23 +42,35 @@ class MultispectralOrganizer:
     def __init__(self, base_directory: str = "."):
         """
         Inicializa el organizador.
-        
+
         Args:
             base_directory (str): Directorio base donde están las carpetas RED y BLUE
         """
         self.base_dir = Path(base_directory).resolve()
         self.red_dir = self.base_dir / "RED"
         self.blue_dir = self.base_dir / "BLUE"
-        
+
         # Carpetas de destino
         self.photos_dir = self.base_dir / "photos"
         self.calibration_dir = self.base_dir / "calibration"
         self.dat_files_dir = self.base_dir / "dat_files"
-        
+
         # Patrón para archivos de calibración
         self.calibration_pattern = re.compile(r'IMG_0000_([1-9]|1[01])\..*')
-        
+
+        # Configuración de logging en el directorio base
+        log_file = self.base_dir / "file_organizer.log"
+        logging.basicConfig(
+            level=logging.INFO,
+            format='%(asctime)s - %(levelname)s - %(message)s',
+            handlers=[
+                logging.FileHandler(log_file, mode='w'),
+                logging.StreamHandler()
+            ]
+        )
+
         logging.info(f"Inicializando organizador en: {self.base_dir}")
+
     
     def validate_structure(self) -> bool:
         """
