@@ -52,6 +52,7 @@ class MultispectralOrganizer:
         self.photos_dir = self.base_dir / "photos"
         self.calibration_dir = self.base_dir / "calibration"
         self.dat_files_dir = self.base_dir / "dat_files"
+        self.discard_images_dir = self.base_dir / "discard_images"
 
         # Patrón para archivos de calibración
         self.calibration_pattern = re.compile(r'IMG_0000_([1-9]|1[01])\..*')
@@ -96,7 +97,7 @@ class MultispectralOrganizer:
     
     def create_destination_folders(self) -> None:
         """Crea las carpetas de destino si no existen."""
-        folders_to_create = [self.photos_dir, self.calibration_dir, self.dat_files_dir]
+        folders_to_create = [self.photos_dir, self.calibration_dir, self.dat_files_dir, self.discard_images_dir]
         
         for folder in folders_to_create:
             if folder.exists():
@@ -240,6 +241,7 @@ class MultispectralOrganizer:
         print(f"├── photos/ ({regular_images} archivos)")
         print(f"├── calibration/ ({calibration_images} archivos)")
         print(f"└── dat_files/ ({dat_files} archivos)")
+        print(f"└── discard_images")
         print("="*60)
         
         # Verificar si se encontraron todas las imágenes de calibración esperadas
