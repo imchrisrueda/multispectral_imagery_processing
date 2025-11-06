@@ -1,0 +1,159 @@
+# Configuration File for Multispectral Toolkit
+# ============================================
+
+# General Settings
+general:
+  project_name: "Multispectral Imagery Processing Toolkit"
+  version: "1.0.0"
+  author: "Christian Rueda"
+  
+# Altitude Extractor Settings
+altitude_extractor:
+  # Default exiftool command
+  exiftool_cmd: "exiftool"
+  
+  # Altitude change threshold (meters)
+  altitude_threshold: 10.0
+  
+  # Supported file extensions
+  file_extensions:
+    - ".jpg"
+    - ".jpeg"
+    - ".tif"
+    - ".tiff"
+  
+  # Report settings
+  report:
+    include_statistics: true
+    decimal_places: 2
+
+# File Organizer Settings
+file_organizer:
+  # Source folder names
+  source_folders:
+    - "RED"
+    - "BLUE"
+  
+  # Target folder names
+  target_folders:
+    photos: "photos"
+    calibration: "calibration"
+    dat_files: "dat_files"
+    discard: "discard_images"
+  
+  # Calibration image pattern (regex)
+  calibration_pattern: "IMG_0000_([1-9]|1[01])\\..*"
+  
+  # Number of expected calibration images
+  expected_calibration_images: 11
+  
+  # Image file extensions
+  image_extensions:
+    - "*.jpg"
+    - "*.jpeg"
+    - "*.png"
+    - "*.tiff"
+    - "*.tif"
+    - "*.bmp"
+    - "*.raw"
+  
+  # Cleanup settings
+  cleanup_empty_folders: true
+  log_file: "file_organizer.log"
+
+# Wavelength Analyzer Settings
+wavelength_analyzer:
+  # Default exiftool command
+  exiftool_cmd: "exiftool"
+  
+  # Wavelength range for plots (nm)
+  wavelength_range:
+    min: 350
+    max: 1000
+    step: 0.5
+  
+  # Plot settings
+  plot:
+    figure_size: [10, 6]
+    dpi: 150
+    grid: true
+    legend_location: "upper right"
+  
+  # Metadata keys to search for CWL
+  cwl_keys:
+    - "CenterWavelength"
+    - "Wavelength"
+    - "CWL"
+    - "CentralWavelength"
+    - "SpectralBandCentralWavelength"
+    - "XMP:CenterWavelength"
+    - "XMP:Wavelength"
+  
+  # Metadata keys to search for FWHM
+  fwhm_keys:
+    - "FWHM"
+    - "Bandwidth"
+    - "BandWidth"
+    - "FullWidthHalfMax"
+    - "SpectralBandWidth"
+    - "XMP:FWHM"
+    - "XMP:Bandwidth"
+
+# GUI Settings
+gui:
+  # Altitude Analyzer GUI
+  altitude_analyzer:
+    window_title: "Altitude EXIF Analyzer"
+    min_width: 940
+    min_height: 660
+    theme: "Fusion"
+    
+    # Default values
+    defaults:
+      altitude_threshold: 10
+      image_type: "RGB"
+      extensions:
+        jpg: true
+        tif: true
+        tiff: true
+
+# Logging Settings
+logging:
+  # Log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+  level: "INFO"
+  
+  # Log format
+  format: "%(asctime)s - %(levelname)s - %(message)s"
+  
+  # Date format
+  date_format: "%Y-%m-%d %H:%M:%S"
+  
+  # Log to file
+  file_logging: true
+  
+  # Log to console
+  console_logging: true
+
+# Performance Settings
+performance:
+  # Maximum number of images to process in batch
+  max_batch_size: 1000
+  
+  # Number of worker threads for parallel processing
+  worker_threads: 4
+  
+  # Memory limit for caching (MB)
+  cache_size_mb: 512
+
+# Export Settings
+export:
+  # CSV settings
+  csv:
+    encoding: "utf-8"
+    separator: ","
+    include_index: false
+  
+  # Report settings
+  report:
+    encoding: "utf-8"
+    line_width: 70
