@@ -351,6 +351,42 @@ class MultispectralOrganizer:
             print(f"❌ Error: {e}")
             return False
 
+    @staticmethod
+    def create_project_structure(dest_dir: str) -> bool:
+        """Create standard project directory structure."""
+        dest_path = Path(dest_dir).resolve()
+        try:
+            dest_path.mkdir(parents=True, exist_ok=True)
+            
+            folders = [
+                "1a_RGB",
+                "1b_MULTI",
+                "1c_THERMAL",
+                "1d_FlightPlan",
+                "2_StitchPROJECT",
+                "3_GPScoordinates",
+                "4_FIELD-Data",
+                "5_FIELD-Photos",
+                "6_temp"
+            ]
+            
+            files = [
+                "Notas_NOMENCLATURA_y_CARPETA",
+                "READ_me"
+            ]
+            
+            for folder in folders:
+                (dest_path / folder).mkdir(exist_ok=True)
+                
+            for file_name in files:
+                (dest_path / file_name).touch(exist_ok=True)
+                
+            print(f"✅ Project structure created at {dest_path}")
+            return True
+        except Exception as e:
+            print(f"❌ Error creating structure: {e}")
+            return False
+
 
 def main():
     """Command-line interface."""
@@ -370,12 +406,21 @@ def main():
         action="store_true",
         help="Don't remove empty source folders after organization"
     )
+    parser.add_argument(
+        "--init-project",
+        metavar="DEST_DIR",
+        help="Create standard project directory structure in the specified destination"
+    )
     
     args = parser.parse_args()
     
     print("=" * 60)
     print("MICASENSE MULTISPECTRAL IMAGE ORGANIZER")
     print("=" * 60)
+    
+    if args.init_project:
+        success = MultispectralOrganizer.create_project_structure(args.init_project)
+        return 0 if success else 1
     
     # Create and run organizer
     organizer = MultispectralOrganizer(args.directory)

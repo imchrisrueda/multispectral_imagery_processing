@@ -7,6 +7,7 @@ A comprehensive toolkit for processing and analyzing multispectral imagery, part
 
 ## 🌟 Features
 
+- **Project Initialization**: Instantly create standardized directory structures for new missions
 - **Altitude Extraction**: Extract and analyze GPS altitude data from image EXIF metadata
 - **File Organization**: Automatically organize multispectral image files (RED/BLUE channels) into structured directories
 - **Wavelength Analysis**: Extract and visualize spectral wavelength characteristics (CWL, FWHM)
@@ -118,6 +119,7 @@ analyzer.plot_wavelength(
 - Export data to CSV
 
 #### 2. **file_organizer.py**
+- Generate standard flight mission directory structures (`--init-project`)
 - Organize RED and BLUE channel folders
 - Separate calibration images (IMG_0000_1 through IMG_0000_11)
 - Move .dat metadata files
@@ -216,6 +218,9 @@ python -m multispectral_toolkit.core.altitude_extractor /path/to/images \
 ### File Organizer CLI
 
 ```bash
+# Create standard project directory structure
+python -m multispectral_toolkit.core.file_organizer --init-project /path/to/new_project
+
 # Organize current directory
 python -m multispectral_toolkit.core.file_organizer .
 

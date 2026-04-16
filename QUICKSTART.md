@@ -40,7 +40,21 @@ pytest
 
 ## Common Tasks
 
-### Task 1: Extract Altitude from Images (2 minutes)
+### Task 1: Initialize Project Directory Structure (1 minute)
+
+```bash
+# Generate the standard flight directories
+multispectral-organize --init-project /path/to/flight_data
+```
+
+**Python API:**
+```python
+from multispectral_toolkit.core.file_organizer import MultispectralOrganizer
+
+MultispectralOrganizer.create_project_structure("/path/to/flight_data")
+```
+
+### Task 2: Extract Altitude from Images (2 minutes)
 
 ```bash
 # Quick CLI usage
@@ -61,7 +75,7 @@ df = extractor.process_directory("/path/to/images")
 print(df)
 ```
 
-### Task 2: Organize MicaSense Files (3 minutes)
+### Task 3: Organize MicaSense Files (3 minutes)
 
 ```bash
 # Navigate to your data directory
@@ -79,7 +93,7 @@ organizer = MultispectralOrganizer("/path/to/data")
 organizer.run()
 ```
 
-### Task 3: Analyze Wavelengths (2 minutes)
+### Task 4: Analyze Wavelengths (2 minutes)
 
 ```bash
 # Analyze single image
@@ -100,7 +114,10 @@ print(f"Center Wavelength: {cwl} nm, FWHM: {fwhm} nm")
 ### Workflow 1: Process New Flight Data
 
 ```bash
-# 1. Organize files
+# 1. Initialize project structure and move your raw files into it
+multispectral-organize --init-project /data/flight_2025-11-06
+
+# 2. Organize files (assuming raw files are inside RED/BLUE folders)
 cd /data/flight_2025-11-06
 multispectral-organize .
 
